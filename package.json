@@ -2,6 +2,7 @@
   "name": "@pioluk/custom-properties-parser",
   "version": "0.1.0",
   "main": "./lib/index.js",
+  "typings": "./index.d.ts",
   "scripts": {
     "test": "tape test/*.js",
     "format": "prettier --write \"./{*.js,*.json,yml,yaml,{src,test}/**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}}\""
