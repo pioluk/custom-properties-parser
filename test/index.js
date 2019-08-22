@@ -65,6 +65,17 @@ test("alias with fallback", async t => {
     t.end();
 });
 
+test("alias non-existent variable without fallback", async t => {
+    const input = `
+        :root {
+            --var-1: var(--color-primary);
+        }
+    `;
+    const result = await parse(input);
+    t.deepEqual(result, { "--var-1": undefined });
+    t.end();
+});
+
 test("fails with any function other than var", async t => {
     t.plan(1);
 
