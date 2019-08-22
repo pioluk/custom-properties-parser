@@ -1,0 +1,17 @@
+{
+  "name": "@pioluk/custom-properties-parser",
+  "version": "0.1.0",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "tape test/*.js",
+    "format": "prettier --write \"./{*.js,*.json,yml,yaml,{src,test}/**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}}\""
+  },
+  "dependencies": {
+    "postcss": "^7.0.17",
+    "postcss-values-parser": "^3.0.5"
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2",
+    "tape": "^4.11.0"
+  }
+}
