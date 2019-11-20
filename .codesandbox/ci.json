@@ -1,0 +1,4 @@
+{
+    "sandboxes": ["new", "vanilla"],
+    "buildCommand": false
+}
