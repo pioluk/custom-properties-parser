@@ -27,6 +27,21 @@ test("simple variables", async (t) => {
     t.end();
 });
 
+test("multiline variable value", async (t) => {
+    const input = `
+        :root {
+            --var-1: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica,
+                Arial, sans-serif, Apple Color Emoji, Segoe UI Emojibody;
+        }
+    `;
+    const result = await parse(input);
+    t.deepEqual(result, {
+        "--var-1":
+            "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emojibody",
+    });
+    t.end();
+});
+
 test("multiple selectors", async (t) => {
     const input = `
         :root {
