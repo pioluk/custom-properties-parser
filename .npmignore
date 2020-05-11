@@ -1,0 +1,4 @@
+.codesandbox/
+test/
+.editorconfig
+.travis.yml
