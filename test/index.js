@@ -1,21 +1,21 @@
 const test = require("tape");
 const parse = require("../");
 
-test("empty", async t => {
+test("empty", async (t) => {
     const input = ``;
     const result = await parse(input);
     t.deepEqual(result, {});
     t.end();
 });
 
-test("empty selector", async t => {
+test("empty selector", async (t) => {
     const input = `body {}`;
     const result = await parse(input);
     t.deepEqual(result, {});
     t.end();
 });
 
-test("simple variables", async t => {
+test("simple variables", async (t) => {
     const input = `
         :root {
             --var-1: #beeeef;
@@ -27,7 +27,7 @@ test("simple variables", async t => {
     t.end();
 });
 
-test("multiple selectors", async t => {
+test("multiple selectors", async (t) => {
     const input = `
         :root {
             --var-1: #beeeef;
@@ -41,7 +41,7 @@ test("multiple selectors", async t => {
     t.end();
 });
 
-test("alias", async t => {
+test("alias", async (t) => {
     const input = `
         :root {
             --var-1: #beeeef;
@@ -53,7 +53,7 @@ test("alias", async t => {
     t.end();
 });
 
-test("alias with fallback", async t => {
+test("alias with fallback", async (t) => {
     const input = `
         :root {
             --var-1: #beeeef;
@@ -65,7 +65,7 @@ test("alias with fallback", async t => {
     t.end();
 });
 
-test("alias non-existent variable without fallback", async t => {
+test("alias non-existent variable without fallback", async (t) => {
     const input = `
         :root {
             --var-1: var(--color-primary);
@@ -76,7 +76,7 @@ test("alias non-existent variable without fallback", async t => {
     t.end();
 });
 
-test("fails with any function other than var", async t => {
+test("fails with any function other than var", async (t) => {
     t.plan(1);
 
     const input = `

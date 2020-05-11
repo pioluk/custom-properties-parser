@@ -5,17 +5,17 @@
   "typings": "./index.d.ts",
   "scripts": {
     "test": "tape test/*.js",
-    "format": "prettier --write \"./{*.js,*.json,yml,yaml,{src,test}/**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}}\""
+    "format": "prettier --write \"./{*.js,*.json,yml,yaml,{lib,src,test}/**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}}\""
   },
   "dependencies": {
-    "postcss": "^7.0.17",
-    "postcss-values-parser": "^3.0.5"
+    "postcss": "^7.0.30",
+    "postcss-values-parser": "^3.2.1"
   },
   "devDependencies": {
-    "husky": "^3.0.4",
-    "lint-staged": "^9.2.3",
-    "prettier": "^1.18.2",
-    "tape": "^4.11.0"
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.2",
+    "prettier": "^2.0.5",
+    "tape": "^5.0.0"
   },
   "homepage": "https://github.com/pioluk/custom-properties-parser",
   "repository": {
@@ -30,8 +30,7 @@
   },
   "lint-staged": {
     "*.{js,json,ts,tsx,css,less,scss,yml,yaml}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }
 }
