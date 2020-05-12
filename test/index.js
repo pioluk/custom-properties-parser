@@ -69,6 +69,24 @@ test("numeric values", async (t) => {
     t.end();
 });
 
+test("unit values", async (t) => {
+    const input = `
+        :root {
+            --var-1: 12px;
+            --var-2: 18pt;
+            --var-3: 50vh;
+            --var-4: 20;
+        }
+    `;
+    const result = await parse(input);
+    t.deepEqual(result, {
+        "--var-1": "12px",
+        "--var-2": "18pt",
+        "--var-3": "50vh",
+        "--var-4": 20,
+    });
+});
+
 test("multiple selectors", async (t) => {
     const input = `
         :root {
