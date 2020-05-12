@@ -42,6 +42,19 @@ test("multiline variable value", async (t) => {
     t.end();
 });
 
+test("numeric values", async (t) => {
+    const input = `
+        :root {
+            --var-1: 500;
+        }
+    `;
+    const result = await parse(input);
+    t.deepEqual(result, {
+        "--var-1": 500,
+    });
+    t.end();
+});
+
 test("multiple selectors", async (t) => {
     const input = `
         :root {
