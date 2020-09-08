@@ -51,7 +51,7 @@ test("text values in quotes", async (t) => {
     `;
     const result = await parse(input);
     t.deepEqual(result, {
-        "--var-1": `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", 'Segoe UI Emojibody'`,
+        "--var-1": `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emojibody"`,
     });
     t.end();
 });
@@ -151,4 +151,24 @@ test("fails with any function other than var", async (t) => {
     } catch (err) {
         t.pass();
     }
+});
+
+test("handles scss code", async (t) => {
+    t.plan(1);
+
+    const input = `
+        :root {
+            @for $i from 1 through 4 {
+                --var-#{$i}: #{$i};
+            }
+        }
+    `;
+
+    const result = await parse(input);
+    t.deepEqual(result, {
+        "--var-1": 1,
+        "--var-2": 2,
+        "--var-3": 3,
+        "--var-4": 4,
+    });
 });
