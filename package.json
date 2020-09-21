@@ -8,7 +8,7 @@
     "format": "prettier --write \"./{*.js,*.json,yml,yaml,{lib,src,test}/**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}}\""
   },
   "dependencies": {
-    "postcss": "^7.0.30",
+    "postcss": "^8.0.6",
     "postcss-values-parser": "^3.2.1",
     "sass": "^1.26.10"
   },
