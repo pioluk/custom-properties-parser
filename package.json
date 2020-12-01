@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "postcss": "^7.0.30",
-    "postcss-values-parser": "^3.2.1",
+    "postcss-values-parser": "^4.0.0",
     "sass": "^1.26.10"
   },
   "devDependencies": {
