@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "postcss": "^8.2.4",
-    "postcss-values-parser": "^4.0.0",
+    "postcss-values-parser": "github:shellscape/postcss-values-parser",
     "sass": "^1.26.10"
   },
   "devDependencies": {
