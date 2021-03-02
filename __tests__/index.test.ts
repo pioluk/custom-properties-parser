@@ -1,21 +1,18 @@
-const test = require("tape");
-const parse = require("../");
+import parse from "../lib";
 
-test("empty", async (t) => {
+test("empty", async () => {
     const input = ``;
     const result = await parse(input);
-    t.deepEqual(result, {});
-    t.end();
+    expect(result).toEqual({});
 });
 
-test("empty selector", async (t) => {
+test("empty selector", async () => {
     const input = `body {}`;
     const result = await parse(input);
-    t.deepEqual(result, {});
-    t.end();
+    expect(result).toEqual({});
 });
 
-test("simple variables", async (t) => {
+test("simple variables", async () => {
     const input = `
         :root {
             --var-1: #beeeef;
@@ -23,11 +20,10 @@ test("simple variables", async (t) => {
         }
     `;
     const result = await parse(input);
-    t.deepEqual(result, { "--var-1": "#beeeef", "--var-2": "red" });
-    t.end();
+    expect(result).toEqual({ "--var-1": "#beeeef", "--var-2": "red" });
 });
 
-test("multiline variable value", async (t) => {
+test("multiline variable value", async () => {
     const input = `
         :root {
             --var-1: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica,
@@ -35,14 +31,13 @@ test("multiline variable value", async (t) => {
         }
     `;
     const result = await parse(input);
-    t.deepEqual(result, {
+    expect(result).toEqual({
         "--var-1":
             "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emojibody",
     });
-    t.end();
 });
 
-test("text values in quotes", async (t) => {
+test("text values in quotes", async () => {
     const input = `
         :root {
             --var-1: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
@@ -50,26 +45,24 @@ test("text values in quotes", async (t) => {
         }
     `;
     const result = await parse(input);
-    t.deepEqual(result, {
+    expect(result).toEqual({
         "--var-1": `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emojibody"`,
     });
-    t.end();
 });
 
-test("numeric values", async (t) => {
+test("numeric values", async () => {
     const input = `
         :root {
             --var-1: 500;
         }
     `;
     const result = await parse(input);
-    t.deepEqual(result, {
+    expect(result).toEqual({
         "--var-1": 500,
     });
-    t.end();
 });
 
-test("unit values", async (t) => {
+test("unit values", async () => {
     const input = `
         :root {
             --var-1: 12px;
@@ -79,7 +72,7 @@ test("unit values", async (t) => {
         }
     `;
     const result = await parse(input);
-    t.deepEqual(result, {
+    expect(result).toEqual({
         "--var-1": "12px",
         "--var-2": "18pt",
         "--var-3": "50vh",
@@ -87,7 +80,7 @@ test("unit values", async (t) => {
     });
 });
 
-test("multiple selectors", async (t) => {
+test("multiple selectors", async () => {
     const input = `
         :root {
             --var-1: #beeeef;
@@ -97,11 +90,10 @@ test("multiple selectors", async (t) => {
         }
     `;
     const result = await parse(input);
-    t.deepEqual(result, { "--var-1": "#beeeef", "--var-2": "red" });
-    t.end();
+    expect(result).toEqual({ "--var-1": "#beeeef", "--var-2": "red" });
 });
 
-test("alias", async (t) => {
+test("alias", async () => {
     const input = `
         :root {
             --var-1: #beeeef;
@@ -109,11 +101,10 @@ test("alias", async (t) => {
         }
     `;
     const result = await parse(input);
-    t.deepEqual(result, { "--var-1": "#beeeef", "--var-2": "#beeeef" });
-    t.end();
+    expect(result).toEqual({ "--var-1": "#beeeef", "--var-2": "#beeeef" });
 });
 
-test("alias with fallback", async (t) => {
+test("alias with fallback", async () => {
     const input = `
         :root {
             --var-1: #beeeef;
@@ -121,24 +112,20 @@ test("alias with fallback", async (t) => {
         }
     `;
     const result = await parse(input);
-    t.deepEqual(result, { "--var-1": "#beeeef", "--var-2": "red" });
-    t.end();
+    expect(result).toEqual({ "--var-1": "#beeeef", "--var-2": "red" });
 });
 
-test("alias non-existent variable without fallback", async (t) => {
+test("alias non-existent variable without fallback", async () => {
     const input = `
         :root {
             --var-1: var(--color-primary);
         }
     `;
     const result = await parse(input);
-    t.deepEqual(result, { "--var-1": undefined });
-    t.end();
+    expect(result).toEqual({ "--var-1": undefined });
 });
 
-test("fails with any function other than var", async (t) => {
-    t.plan(1);
-
+test("fails with any function other than var", async () => {
     const input = `
         :root {
             --var-1: calc(100% - 16px);
@@ -147,15 +134,13 @@ test("fails with any function other than var", async (t) => {
 
     try {
         await parse(input);
-        t.fail();
+        fail();
     } catch (err) {
-        t.pass();
+        // pass
     }
 });
 
-test("handles scss code", async (t) => {
-    t.plan(1);
-
+test("handles scss code", async () => {
     const input = `
         :root {
             @for $i from 1 through 4 {
@@ -165,7 +150,7 @@ test("handles scss code", async (t) => {
     `;
 
     const result = await parse(input);
-    t.deepEqual(result, {
+    expect(result).toEqual({
         "--var-1": 1,
         "--var-2": 2,
         "--var-3": 3,

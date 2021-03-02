@@ -1,10 +1,11 @@
 {
   "name": "@pioluk/custom-properties-parser",
   "version": "0.3.1",
-  "main": "./lib/index.js",
-  "typings": "./index.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
-    "test": "tape test/*.js",
+    "build": "tsc",
+    "test": "jest",
     "format": "prettier --write \"./{*.js,*.json,yml,yaml,{lib,src,test}/**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}}\""
   },
   "dependencies": {
@@ -13,15 +14,22 @@
     "sass": "^1.26.10"
   },
   "devDependencies": {
-    "husky": "^4.3.0",
+    "@types/node": "^12.20.4",
+    "@types/sass": "^1.16.0",
+    "husky": "^4.3.8",
+    "jest": "^26.6.3",
     "lint-staged": "^10.5.2",
     "prettier": "^2.2.1",
-    "tape": "^5.0.1"
+    "ts-jest": "^26.5.2",
+    "typescript": "^4.2.2"
   },
   "homepage": "https://github.com/pioluk/custom-properties-parser",
   "repository": {
     "type": "git",
     "url": "https://github.com/pioluk/custom-properties-parser"
+  },
+  "engines": {
+    "node": ">= 12"
   },
   "license": "MIT",
   "husky": {
