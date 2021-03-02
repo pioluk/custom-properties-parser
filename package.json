@@ -14,7 +14,7 @@
     "sass": "^1.26.10"
   },
   "devDependencies": {
-    "@types/node": "^12.20.4",
+    "@types/node": "^14.14.31",
     "@types/sass": "^1.16.0",
     "husky": "^4.3.8",
     "jest": "^26.6.3",
