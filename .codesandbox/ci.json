@@ -1,4 +1,5 @@
 {
-    "sandboxes": ["new", "vanilla"],
-    "buildCommand": false
+    "buildCommand": "build",
+    "node": "14",
+    "sandboxes": ["new", "vanilla"]
 }

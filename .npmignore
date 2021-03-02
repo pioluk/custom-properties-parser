@@ -1,4 +1,5 @@
-.codesandbox/
-test/
-.editorconfig
-.travis.yml
+*
+!dist/*
+!LICENSE
+!README.md
+!package.json
