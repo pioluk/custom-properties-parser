@@ -1,4 +1,4 @@
-import postcss from "postcss";
+import postcss, { Declaration } from "postcss";
 import { ChildNode, Func, Numeric, parse as parseValue, Root } from "postcss-values-parser";
 import * as sass from "sass";
 import { MapKey, MapValue } from "./types";
@@ -22,7 +22,7 @@ export default async function parse(input: string): Promise<Record<string, Prope
     return mapToRecord(customPropertyRegistry);
 }
 
-function isCustomProperty(node: postcss.Declaration) {
+function isCustomProperty(node: Declaration) {
     return node.prop.startsWith("--");
 }
 
