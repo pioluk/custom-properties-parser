@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "format": "prettier --write \"./{*.js,*.json,yml,yaml,{lib,src,test}/**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}}\""
+    "format": "prettier --write \"./{*.js,*.json,yml,yaml,{lib,src,test}/**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}}\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "postcss": "^8.0.9",
@@ -33,11 +34,6 @@
     "node": ">= 12"
   },
   "license": "MIT",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.{js,json,ts,tsx,css,less,scss,yml,yaml}": [
       "prettier --write"
