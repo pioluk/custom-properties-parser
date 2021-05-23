@@ -125,19 +125,17 @@ test("alias non-existent variable without fallback", async () => {
     expect(result).toStrictEqual({ "--var-1": undefined });
 });
 
-test("fails with any function other than var", async () => {
+test("pass-through functions other than var", async () => {
     const input = `
         :root {
             --var-1: calc(100% - 16px);
         }
     `;
 
-    try {
-        await parse(input);
-        fail();
-    } catch (err) {
-        // pass
-    }
+    const result = await parse(input);
+    expect(result).toEqual({
+        "--var-1": "calc(100% - 16px)",
+    });
 });
 
 test("handles scss code", async () => {

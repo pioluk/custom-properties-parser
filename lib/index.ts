@@ -65,7 +65,7 @@ function parseNumericValue(node: Numeric): PropertyValue {
 
 function compileFunc(func: Func, customPropertyRegistry: PropertyRegistry): PropertyValue {
     if (func.name !== "var") {
-        throw new Error(`Unsupported function "${func.name}"`);
+        return func.toString();
     }
 
     const args = func.nodes;
