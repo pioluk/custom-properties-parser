@@ -1,7 +1,6 @@
 import postcss, { Declaration } from "postcss";
 import { ChildNode, Func, Numeric, parse as parseValue, Root } from "postcss-values-parser";
 import * as sass from "sass";
-import { MapKey, MapValue } from "./types";
 export type PropertyValue = undefined | number | string;
 
 type PropertyRegistry = Map<string, PropertyValue>;
@@ -88,9 +87,6 @@ function isEmpty(a: ArrayLike<any>) {
     return a.length === 0;
 }
 
-function mapToRecord<M extends Map<number | string, any>>(map: M): Record<MapKey<M>, MapValue<M>> {
-    return Array.from(map.entries()).reduce<Record<number | string, any>>((record, [key, value]) => {
-        record[key] = value;
-        return record;
-    }, {});
+function mapToRecord<V>(map: Map<PropertyKey, V>): Record<PropertyKey, V> {
+    return Object.fromEntries(map.entries());
 }
