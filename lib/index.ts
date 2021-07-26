@@ -1,11 +1,13 @@
 import postcss, { Declaration } from "postcss";
 import { ChildNode, Func, Numeric, parse as parseValue, Root } from "postcss-values-parser";
 import * as sass from "sass";
+
 export type PropertyValue = undefined | number | string;
 
 type PropertyRegistry = Map<string, PropertyValue>;
+type Result = Record<string, PropertyValue>;
 
-export default async function parse(input: string): Promise<Record<string, PropertyValue>> {
+export default async function parse(input: string): Promise<Result> {
     const customPropertyRegistry = new Map<string, PropertyValue>();
 
     const { css } = sass.renderSync({ data: input });
@@ -21,7 +23,7 @@ export default async function parse(input: string): Promise<Record<string, Prope
     return mapToRecord(customPropertyRegistry);
 }
 
-function isCustomProperty(node: Declaration) {
+function isCustomProperty(node: Declaration): boolean {
     return node.prop.startsWith("--");
 }
 
@@ -83,7 +85,7 @@ function compileFunc(func: Func, customPropertyRegistry: PropertyRegistry): Prop
     return fallback.value;
 }
 
-function isEmpty(a: ArrayLike<any>) {
+function isEmpty(a: ArrayLike<any>): boolean {
     return a.length === 0;
 }
 
