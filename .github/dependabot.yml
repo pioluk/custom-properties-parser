@@ -11,3 +11,9 @@ updates:
       interval: "weekly"
     reviewers:
       - "pioluk"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    reviewers:
+      - "pioluk"
