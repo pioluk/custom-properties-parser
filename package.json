@@ -31,7 +31,7 @@
     "url": "https://github.com/pioluk/custom-properties-parser"
   },
   "engines": {
-    "node": ">= 12"
+    "node": ">= 14"
   },
   "license": "MIT",
   "lint-staged": {
