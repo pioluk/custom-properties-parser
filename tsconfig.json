@@ -9,8 +9,8 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "outDir": "./dist",
-        "declaration": true
+        "declaration": true,
     },
     "include": ["./lib/**/*.ts"],
-    "exclude": ["node_modules/**/*"]
+    "exclude": ["node_modules/**/*"],
 }
