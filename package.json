@@ -2,14 +2,31 @@
 	"name": "@pioluk/custom-properties-parser",
 	"version": "0.6.2",
 	"license": "MIT",
-	"main": "./dist/lib/index.js",
-	"typings": "./dist/lib/index.d.ts",
+	"homepage": "https://github.com/pioluk/custom-properties-parser",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/pioluk/custom-properties-parser.git"
+	},
+	"engines": {
+		"node": ">= 18"
+	},
+	"exports": {
+		"types": "./dist/index.d.ts",
+		"module": "./dist/index.mjs",
+		"import": "./dist/index.mjs",
+		"require": "./dist/index.js",
+		"default": "./dist/index.mjs"
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
 	"scripts": {
-		"build": "tsc",
+		"build": "npm run clean && npm run bundle",
+		"bundle": "pkgroll --src lib",
+		"clean": "rimraf dist",
 		"format": "biome format --write .",
 		"lint": "biome lint --write .",
-		"test": "borp",
-		"typecheck": "tsc --noEmit",
+		"test": "tsx --test",
+		"typecheck": "tsc",
 		"prepare": "test $CI || lefthook install"
 	},
 	"dependencies": {
@@ -20,18 +37,12 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@total-typescript/ts-reset": "0.6.1",
-		"@types/node": "20.12.8",
-		"borp": "0.18.0",
+		"@tsconfig/node18": "18.2.4",
+		"@types/node": "22.9.0",
 		"lefthook": "1.8.2",
-		"prettier": "3.3.3",
+		"pkgroll": "2.5.1",
+		"rimraf": "6.0.1",
+		"tsx": "4.19.2",
 		"typescript": "5.6.3"
-	},
-	"homepage": "https://github.com/pioluk/custom-properties-parser",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/pioluk/custom-properties-parser.git"
-	},
-	"engines": {
-		"node": ">= 18"
 	}
 }
