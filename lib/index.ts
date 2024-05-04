@@ -1,6 +1,7 @@
 import postcss, { Declaration } from "postcss";
 import { ChildNode, Func, Numeric, parse as parseValue, Root } from "postcss-values-parser";
 import * as sass from "sass";
+import { join, Punctuation, Value, type JoinableChunk } from "./joinable";
 
 export type PropertyValue = undefined | number | string;
 
@@ -28,43 +29,42 @@ function isCustomProperty(node: Declaration): boolean {
 }
 
 function getValue(root: Root, customPropertyRegistry: PropertyRegistry): PropertyValue {
-	if (root.nodes.length === 1) {
-		const node = root.nodes[0];
-		if (node.type == "word" || node.type === "quoted") {
-			return node.value;
-		} else if (node.type === "numeric") {
-			return parseNumericValue(node);
-		} else if (node.type === "func") {
-			return compileFunc(node, customPropertyRegistry);
-		}
-		throw new Error(`Unsupported node type: "${node.type}"`);
-	} else if (root.nodes.length > 1) {
-		return collectNodes(root.nodes);
-	}
-
-	return undefined;
+	return collectNodes(root.nodes, customPropertyRegistry);
 }
 
-function collectNodes(nodes: ChildNode[]): string {
-	return nodes
-		.reduce<string[]>((acc, node) => {
-			if (node.type === "word" || node.type === "quoted") {
-				return isEmpty(acc) ? [...acc, node.value] : [...acc, " ", node.value];
-			} else if (node.type === "punctuation") {
-				return [...acc, ","];
-			}
+function collectNodes(nodes: ChildNode[], customPropertyRegistry: PropertyRegistry): PropertyValue {
+	if (nodes.length === 1) {
+		// If we have only one node, then parse it separately without joining to prevent converting number to string
+		return parseNode(nodes[0], customPropertyRegistry).value;
+	}
+	return join(nodes.map((node) => parseNode(node, customPropertyRegistry)));
+}
 
-			// else ignore
-			return acc;
-		}, [])
-		.join("");
+function parseNode(node: ChildNode, customPropertyRegistry: PropertyRegistry): JoinableChunk<PropertyValue> {
+	switch (node.type) {
+		case "word":
+		case "quoted":
+			return Value(node.value);
+
+		case "punctuation":
+			return Punctuation(node.value);
+
+		case "numeric":
+			return Value(parseNumericValue(node));
+
+		case "func":
+			return Value(parseFunc(node, customPropertyRegistry));
+
+		default:
+			throw new Error(`Unsupported node type: "${node.type}"`);
+	}
 }
 
 function parseNumericValue(node: Numeric): PropertyValue {
 	return node.unit ? `${node.value}${node.unit}` : +node.value;
 }
 
-function compileFunc(func: Func, customPropertyRegistry: PropertyRegistry): PropertyValue {
+function parseFunc(func: Func, customPropertyRegistry: PropertyRegistry): PropertyValue {
 	if (func.name !== "var") {
 		return func.toString();
 	}
@@ -83,10 +83,6 @@ function compileFunc(func: Func, customPropertyRegistry: PropertyRegistry): Prop
 	}
 
 	return fallback.value;
-}
-
-function isEmpty(a: ArrayLike<any>): boolean {
-	return a.length === 0;
 }
 
 function mapToRecord<V>(map: Map<PropertyKey, V>): Record<PropertyKey, V> {
