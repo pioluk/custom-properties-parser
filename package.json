@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "format": "prettier --write \"./{*.js,*.json,*.yml,*.yaml,{lib,src,__tests__}/**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}}\"",
+    "format": "prettier --write \"./**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}\"",
     "prepare": "husky install"
   },
   "dependencies": {
