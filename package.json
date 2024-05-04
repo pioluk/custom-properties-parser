@@ -2,10 +2,29 @@
 	"name": "@pioluk/custom-properties-parser",
 	"version": "0.6.1",
 	"license": "MIT",
-	"main": "./dist/index.js",
-	"typings": "./dist/index.d.ts",
+	"homepage": "https://github.com/pioluk/custom-properties-parser",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/pioluk/custom-properties-parser.git"
+	},
+	"engines": {
+		"node": ">= 18"
+	},
+	"source": "./lib/index.ts",
+	"exports": {
+		"types": "./dist/index.d.ts",
+		"module": "./dist/index.mjs",
+		"import": "./dist/index.mjs",
+		"require": "./dist/index.cjs",
+		"default": "./dist/index.mjs"
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"umd:main": "./dist/index.umd.js",
 	"scripts": {
-		"build": "tsc",
+		"build": "npm run clean && npm run bundle",
+		"bundle": "microbundle --strict --target node -f esm,cjs,umd",
+		"clean": "rimraf dist",
 		"format": "biome format --write .",
 		"lint": "biome lint --write .",
 		"test": "borp",
@@ -23,15 +42,9 @@
 		"@types/node": "20.12.8",
 		"borp": "0.17.0",
 		"lefthook": "1.7.9",
+		"microbundle": "0.15.1",
 		"prettier": "3.3.3",
+		"rimraf": "6.0.1",
 		"typescript": "5.5.4"
-	},
-	"homepage": "https://github.com/pioluk/custom-properties-parser",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/pioluk/custom-properties-parser.git"
-	},
-	"engines": {
-		"node": ">= 18"
 	}
 }

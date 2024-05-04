@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"noEmit": true,
 		"target": "ES2022",
 		"module": "NodeNext",
 		"strict": true,
@@ -7,8 +8,6 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"outDir": "./dist",
-		"declaration": true
+		"noUnusedParameters": true
 	}
 }
