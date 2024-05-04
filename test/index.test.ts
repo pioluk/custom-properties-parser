@@ -1,15 +1,17 @@
+import { test } from "node:test";
+import { deepEqual, deepStrictEqual } from "node:assert";
 import parse from "../lib";
 
 test("empty", async () => {
 	const input = ``;
 	const result = await parse(input);
-	expect(result).toStrictEqual({});
+	deepStrictEqual(result, {});
 });
 
 test("empty selector", async () => {
 	const input = `body {}`;
 	const result = await parse(input);
-	expect(result).toStrictEqual({});
+	deepStrictEqual(result, {});
 });
 
 test("simple variables", async () => {
@@ -20,7 +22,7 @@ test("simple variables", async () => {
         }
     `;
 	const result = await parse(input);
-	expect(result).toStrictEqual({ "--var-1": "#beeeef", "--var-2": "red" });
+	deepStrictEqual(result, { "--var-1": "#beeeef", "--var-2": "red" });
 });
 
 test("multiline variable value", async () => {
@@ -31,7 +33,7 @@ test("multiline variable value", async () => {
         }
     `;
 	const result = await parse(input);
-	expect(result).toStrictEqual({
+	deepStrictEqual(result, {
 		"--var-1":
 			"-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emojibody",
 	});
@@ -45,7 +47,7 @@ test("text values in quotes", async () => {
         }
     `;
 	const result = await parse(input);
-	expect(result).toStrictEqual({
+	deepStrictEqual(result, {
 		"--var-1": `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emojibody"`,
 	});
 });
@@ -57,7 +59,7 @@ test("numeric values", async () => {
         }
     `;
 	const result = await parse(input);
-	expect(result).toStrictEqual({
+	deepStrictEqual(result, {
 		"--var-1": 500,
 	});
 });
@@ -72,7 +74,7 @@ test("unit values", async () => {
         }
     `;
 	const result = await parse(input);
-	expect(result).toStrictEqual({
+	deepStrictEqual(result, {
 		"--var-1": "12px",
 		"--var-2": "18pt",
 		"--var-3": "50vh",
@@ -90,7 +92,7 @@ test("multiple selectors", async () => {
         }
     `;
 	const result = await parse(input);
-	expect(result).toStrictEqual({ "--var-1": "#beeeef", "--var-2": "red" });
+	deepStrictEqual(result, { "--var-1": "#beeeef", "--var-2": "red" });
 });
 
 test("alias", async () => {
@@ -101,7 +103,7 @@ test("alias", async () => {
         }
     `;
 	const result = await parse(input);
-	expect(result).toStrictEqual({ "--var-1": "#beeeef", "--var-2": "#beeeef" });
+	deepStrictEqual(result, { "--var-1": "#beeeef", "--var-2": "#beeeef" });
 });
 
 test("alias with fallback", async () => {
@@ -112,7 +114,7 @@ test("alias with fallback", async () => {
         }
     `;
 	const result = await parse(input);
-	expect(result).toStrictEqual({ "--var-1": "#beeeef", "--var-2": "red" });
+	deepStrictEqual(result, { "--var-1": "#beeeef", "--var-2": "red" });
 });
 
 test("alias non-existent variable without fallback", async () => {
@@ -122,7 +124,7 @@ test("alias non-existent variable without fallback", async () => {
         }
     `;
 	const result = await parse(input);
-	expect(result).toStrictEqual({ "--var-1": undefined });
+	deepStrictEqual(result, { "--var-1": undefined });
 });
 
 test("pass-through functions other than var", async () => {
@@ -133,7 +135,7 @@ test("pass-through functions other than var", async () => {
     `;
 
 	const result = await parse(input);
-	expect(result).toEqual({
+	deepEqual(result, {
 		"--var-1": "calc(100% - 16px)",
 	});
 });
@@ -148,7 +150,7 @@ test("handles scss code", async () => {
     `;
 
 	const result = await parse(input);
-	expect(result).toStrictEqual({
+	deepStrictEqual(result, {
 		"--var-1": 1,
 		"--var-2": 2,
 		"--var-3": 3,
