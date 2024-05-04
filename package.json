@@ -5,9 +5,10 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest",
     "format": "prettier --write \"./**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}\"",
-    "prepare": "husky install"
+    "prepare": "husky",
+    "test": "borp",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "postcss": "^8.0.9",
@@ -15,14 +16,11 @@
     "sass": "^1.26.10"
   },
   "devDependencies": {
-    "@types/jest": "29.5.12",
-    "@types/node": "14.14.44",
-    "@types/sass": "1.45.0",
+    "@types/node": "20.12.8",
+    "borp": "0.13.0",
     "husky": "9.0.11",
-    "jest": "29.7.0",
     "lint-staged": "15.2.2",
     "prettier": "3.2.5",
-    "ts-jest": "29.1.2",
     "typescript": "5.4.5"
   },
   "homepage": "https://github.com/pioluk/custom-properties-parser",
@@ -31,7 +29,7 @@
     "url": "https://github.com/pioluk/custom-properties-parser"
   },
   "engines": {
-    "node": ">= 14"
+    "node": ">= 18"
   },
   "license": "MIT",
   "lint-staged": {
