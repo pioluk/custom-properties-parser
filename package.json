@@ -5,9 +5,10 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "borp",
     "format": "prettier --write \"./**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "borp",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "postcss": "^8.0.9",

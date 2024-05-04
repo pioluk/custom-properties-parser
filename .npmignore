@@ -1,5 +1,5 @@
 *
-!dist/*
-!LICENSE
-!README.md
-!package.json
+!/dist/lib/*
+!/LICENSE
+!/README.md
+!/package.json

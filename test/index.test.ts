@@ -1,5 +1,5 @@
-import { test } from "node:test";
 import { deepEqual, deepStrictEqual } from "node:assert";
+import { test } from "node:test";
 import parse from "../lib";
 
 test("empty", async () => {
