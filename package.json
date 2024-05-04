@@ -13,7 +13,7 @@
   "dependencies": {
     "postcss": "^8.0.9",
     "postcss-values-parser": "^5.0.0",
-    "sass": "^1.26.10"
+    "sass": "^1.45.0"
   },
   "devDependencies": {
     "@types/node": "20.12.8",
