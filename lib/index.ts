@@ -10,7 +10,7 @@ type Result = Record<string, PropertyValue>;
 export default async function parse(input: string): Promise<Result> {
 	const customPropertyRegistry = new Map<string, PropertyValue>();
 
-	const { css } = sass.renderSync({ data: input });
+	const { css } = await sass.compileStringAsync(input);
 	const result = await postcss().process(css.toString());
 	result.root?.walkDecls((decl) => {
 		if (isCustomProperty(decl)) {
