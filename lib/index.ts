@@ -1,7 +1,7 @@
 import postcss, { Declaration } from "postcss";
 import { ChildNode, Func, Numeric, parse as parseValue, Root } from "postcss-values-parser";
 import * as sass from "sass";
-import { join, Punctuation, Value, type JoinableChunk } from "./joinable";
+import { join, Punctuation, Value, type JoinableChunk } from "./joinable.js";
 
 export type PropertyValue = undefined | number | string;
 
