@@ -16,22 +16,22 @@ test("empty selector", async () => {
 
 test("simple variables", async () => {
 	const input = `
-        :root {
-            --var-1: #beeeef;
-            --var-2: red;
-        }
-    `;
+		:root {
+			--var-1: #beeeef;
+			--var-2: red;
+		}
+	`;
 	const result = await parse(input);
 	deepStrictEqual(result, { "--var-1": "#beeeef", "--var-2": "red" });
 });
 
 test("multiline variable value", async () => {
 	const input = `
-        :root {
-            --var-1: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica,
-                Arial, sans-serif, Apple Color Emoji, Segoe UI Emojibody;
-        }
-    `;
+		:root {
+			--var-1: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica,
+				Arial, sans-serif, Apple Color Emoji, Segoe UI Emojibody;
+		}
+	`;
 	const result = await parse(input);
 	deepStrictEqual(result, {
 		"--var-1":
@@ -41,11 +41,11 @@ test("multiline variable value", async () => {
 
 test("text values in quotes", async () => {
 	const input = `
-        :root {
-            --var-1: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
-                Arial, sans-serif, "Apple Color Emoji", 'Segoe UI Emojibody';
-        }
-    `;
+		:root {
+			--var-1: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+				Arial, sans-serif, "Apple Color Emoji", 'Segoe UI Emojibody';
+		}
+	`;
 	const result = await parse(input);
 	deepStrictEqual(result, {
 		"--var-1": `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emojibody"`,
@@ -54,10 +54,10 @@ test("text values in quotes", async () => {
 
 test("numeric values", async () => {
 	const input = `
-        :root {
-            --var-1: 500;
-        }
-    `;
+		:root {
+			--var-1: 500;
+		}
+	`;
 	const result = await parse(input);
 	deepStrictEqual(result, {
 		"--var-1": 500,
@@ -66,13 +66,13 @@ test("numeric values", async () => {
 
 test("unit values", async () => {
 	const input = `
-        :root {
-            --var-1: 12px;
-            --var-2: 18pt;
-            --var-3: 50vh;
-            --var-4: 20;
-        }
-    `;
+		:root {
+			--var-1: 12px;
+			--var-2: 18pt;
+			--var-3: 50vh;
+			--var-4: 20;
+		}
+	`;
 	const result = await parse(input);
 	deepStrictEqual(result, {
 		"--var-1": "12px",
@@ -84,55 +84,55 @@ test("unit values", async () => {
 
 test("multiple selectors", async () => {
 	const input = `
-        :root {
-            --var-1: #beeeef;
-        }
-        body {
-            --var-2: red;
-        }
-    `;
+		:root {
+			--var-1: #beeeef;
+		}
+		body {
+			--var-2: red;
+		}
+	`;
 	const result = await parse(input);
 	deepStrictEqual(result, { "--var-1": "#beeeef", "--var-2": "red" });
 });
 
 test("alias", async () => {
 	const input = `
-        :root {
-            --var-1: #beeeef;
-            --var-2: var(--var-1);
-        }
-    `;
+		:root {
+			--var-1: #beeeef;
+			--var-2: var(--var-1);
+		}
+	`;
 	const result = await parse(input);
 	deepStrictEqual(result, { "--var-1": "#beeeef", "--var-2": "#beeeef" });
 });
 
 test("alias with fallback", async () => {
 	const input = `
-        :root {
-            --var-1: #beeeef;
-            --var-2: var(--var-0, red);
-        }
-    `;
+		:root {
+			--var-1: #beeeef;
+			--var-2: var(--var-0, red);
+		}
+	`;
 	const result = await parse(input);
 	deepStrictEqual(result, { "--var-1": "#beeeef", "--var-2": "red" });
 });
 
 test("alias non-existent variable without fallback", async () => {
 	const input = `
-        :root {
-            --var-1: var(--color-primary);
-        }
-    `;
+		:root {
+			--var-1: var(--color-primary);
+		}
+	`;
 	const result = await parse(input);
 	deepStrictEqual(result, { "--var-1": undefined });
 });
 
 test("pass-through functions other than var", async () => {
 	const input = `
-        :root {
-            --var-1: calc(100% - 16px);
-        }
-    `;
+		:root {
+			--var-1: calc(100% - 16px);
+		}
+	`;
 
 	const result = await parse(input);
 	deepEqual(result, {
@@ -142,12 +142,12 @@ test("pass-through functions other than var", async () => {
 
 test("handles scss code", async () => {
 	const input = `
-        :root {
-            @for $i from 1 through 4 {
-                --var-#{$i}: #{$i};
-            }
-        }
-    `;
+		:root {
+			@for $i from 1 through 4 {
+				--var-#{$i}: #{$i};
+			}
+		}
+	`;
 
 	const result = await parse(input);
 	deepStrictEqual(result, {
@@ -155,5 +155,22 @@ test("handles scss code", async () => {
 		"--var-2": 2,
 		"--var-3": 3,
 		"--var-4": 4,
+	});
+});
+
+test("multiple values", async () => {
+	const input = `
+		:root {
+			--var-1: 20px 0;
+			--var-2: 20px 0 3em 1vh;
+			--var-3: calc(100% - 5dvh) minmax(200px, 1fr);
+		}
+	`;
+
+	const result = await parse(input);
+	deepStrictEqual(result, {
+		"--var-1": "20px 0",
+		"--var-2": "20px 0 3em 1vh",
+		"--var-3": "calc(100% - 5dvh) minmax(200px, 1fr)",
 	});
 });
