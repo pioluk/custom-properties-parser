@@ -174,3 +174,22 @@ test("multiple values", async () => {
 		"--var-3": "calc(100% - 5dvh) minmax(200px, 1fr)",
 	});
 });
+
+test("handles comments", async () => {
+	const input = `
+		:root {
+			--var-1: /* Lorem ipsum */ 1em;
+			--var-2: 2em /* Lorem ipsum */;
+			--var-3: 3em; // Lorem ipsum
+			--var-4: /* Lorem ipsum */;
+		}
+	`;
+
+	const result = await parse(input);
+	deepEqual(result, {
+		"--var-1": "1em",
+		"--var-2": "2em",
+		"--var-3": "3em",
+		"--var-4": "",
+	});
+});
