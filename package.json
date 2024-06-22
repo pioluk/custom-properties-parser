@@ -1,40 +1,36 @@
 {
-  "name": "@pioluk/custom-properties-parser",
-  "version": "0.6.1",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "format": "prettier --write \"./**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}\"",
-    "prepare": "husky",
-    "test": "borp",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "postcss": "^8.0.9",
-    "postcss-values-parser": "^5.0.0",
-    "sass": "^1.45.0"
-  },
-  "devDependencies": {
-    "@types/node": "20.12.8",
-    "borp": "0.15.0",
-    "husky": "9.0.11",
-    "lint-staged": "15.2.7",
-    "prettier": "3.3.2",
-    "typescript": "5.5.2"
-  },
-  "homepage": "https://github.com/pioluk/custom-properties-parser",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pioluk/custom-properties-parser.git"
-  },
-  "engines": {
-    "node": ">= 18"
-  },
-  "license": "MIT",
-  "lint-staged": {
-    "*.{js,json,ts,tsx,css,less,scss,yml,yaml}": [
-      "prettier --write"
-    ]
-  }
+	"name": "@pioluk/custom-properties-parser",
+	"version": "0.6.1",
+	"license": "MIT",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"format": "prettier --write \"./**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}\"",
+		"test": "borp",
+		"typecheck": "tsc --noEmit",
+		"prepare": "test $CI || lefthook install"
+	},
+	"dependencies": {
+		"postcss": "^8.0.9",
+		"postcss-values-parser": "^5.0.0",
+		"sass": "^1.45.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.8.2",
+		"@total-typescript/ts-reset": "0.5.1",
+		"@types/node": "20.12.8",
+		"borp": "0.15.0",
+		"lefthook": "1.6.18",
+		"prettier": "3.3.2",
+		"typescript": "5.5.2"
+	},
+	"homepage": "https://github.com/pioluk/custom-properties-parser",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/pioluk/custom-properties-parser.git"
+	},
+	"engines": {
+		"node": ">= 18"
+	}
 }

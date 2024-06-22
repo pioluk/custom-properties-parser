@@ -3,13 +3,13 @@ import { test } from "node:test";
 import parse from "../lib";
 
 test("empty", async () => {
-	const input = ``;
+	const input = "";
 	const result = await parse(input);
 	deepStrictEqual(result, {});
 });
 
 test("empty selector", async () => {
-	const input = `body {}`;
+	const input = "body {}";
 	const result = await parse(input);
 	deepStrictEqual(result, {});
 });
