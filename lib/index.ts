@@ -1,4 +1,3 @@
-import "@total-typescript/ts-reset";
 import postcss, { type Declaration } from "postcss";
 import {
 	type ChildNode,

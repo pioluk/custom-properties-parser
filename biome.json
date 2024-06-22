@@ -23,5 +23,8 @@
 			"quoteStyle": "double",
 			"attributePosition": "auto"
 		}
+	},
+	"files": {
+		"ignore": ["dist/**"]
 	}
 }
