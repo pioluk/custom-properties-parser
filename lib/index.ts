@@ -1,7 +1,14 @@
-import postcss, { Declaration } from "postcss";
-import { ChildNode, Func, Numeric, parse as parseValue, Root } from "postcss-values-parser";
+import "@total-typescript/ts-reset";
+import postcss, { type Declaration } from "postcss";
+import {
+	type ChildNode,
+	type Func,
+	type Numeric,
+	type Root,
+	parse as parseValue,
+} from "postcss-values-parser";
 import * as sass from "sass";
-import { join, Punctuation, Value, type JoinableChunk } from "./joinable.js";
+import { type JoinableChunk, Punctuation, Value, join } from "./joinable.js";
 
 export type PropertyValue = undefined | number | string;
 
@@ -40,7 +47,10 @@ function collectNodes(nodes: ChildNode[], customPropertyRegistry: PropertyRegist
 	return join(nodes.map((node) => parseNode(node, customPropertyRegistry)));
 }
 
-function parseNode(node: ChildNode, customPropertyRegistry: PropertyRegistry): JoinableChunk<PropertyValue> {
+function parseNode(
+	node: ChildNode,
+	customPropertyRegistry: PropertyRegistry,
+): JoinableChunk<PropertyValue> {
 	switch (node.type) {
 		case "word":
 		case "quoted":
@@ -73,7 +83,7 @@ function parseFunc(func: Func, customPropertyRegistry: PropertyRegistry): Proper
 	if ("value" in args[0]) {
 		const customPropertyName = args[0].value;
 		if (customPropertyRegistry.has(customPropertyName)) {
-			return customPropertyRegistry.get(customPropertyName)!;
+			return customPropertyRegistry.get(customPropertyName);
 		}
 	}
 

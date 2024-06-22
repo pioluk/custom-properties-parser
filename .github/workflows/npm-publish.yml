@@ -21,6 +21,9 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - run: npm install
+
+      - run: npx biome ci .
+
       - run: npm test
 
   publish-npm:
