@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "postcss": "^8.0.9",
-    "postcss-values-parser": "^5.0.0",
+    "postcss-values-parser": "^6.0.2",
     "sass": "^1.45.0"
   },
   "devDependencies": {
