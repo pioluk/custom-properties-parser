@@ -6,7 +6,7 @@
 	"typings": "./dist/index.d.ts",
 	"scripts": {
 		"build": "tsc",
-		"format": "prettier --write \"./**/*.{js,json,ts,tsx,css,less,scss,yml,yaml}\"",
+		"format": "biome format --write .",
 		"test": "borp",
 		"typecheck": "tsc --noEmit",
 		"prepare": "test $CI || lefthook install"
