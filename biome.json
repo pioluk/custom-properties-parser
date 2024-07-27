@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
+	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
 	"formatter": {
 		"enabled": true,
 		"formatWithErrors": false,
@@ -9,8 +9,15 @@
 		"lineWidth": 100,
 		"attributePosition": "auto"
 	},
-	"organizeImports": { "enabled": true },
-	"linter": { "enabled": true, "rules": { "recommended": true } },
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true
+		}
+	},
 	"javascript": {
 		"formatter": {
 			"jsxQuoteStyle": "double",
