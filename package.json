@@ -28,7 +28,7 @@
 		"format": "biome format --write .",
 		"lint": "biome lint --write .",
 		"test": "tsx --test",
-		"typecheck": "tsc --noEmit",
+		"typecheck": "tsc",
 		"prepare": "test $CI || lefthook install"
 	},
 	"dependencies": {
