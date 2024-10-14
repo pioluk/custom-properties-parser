@@ -2,8 +2,8 @@
 	"name": "@pioluk/custom-properties-parser",
 	"version": "0.6.1",
 	"license": "MIT",
-	"main": "./dist/index.js",
-	"typings": "./dist/index.d.ts",
+	"main": "./dist/lib/index.js",
+	"typings": "./dist/lib/index.d.ts",
 	"scripts": {
 		"build": "tsc",
 		"format": "biome format --write .",
