@@ -1,6 +1,6 @@
 {
 	"name": "@pioluk/custom-properties-parser",
-	"version": "0.6.1",
+	"version": "0.6.2",
 	"license": "MIT",
 	"main": "./dist/lib/index.js",
 	"typings": "./dist/lib/index.d.ts",
