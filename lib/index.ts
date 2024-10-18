@@ -18,7 +18,7 @@ export default async function parse(input: string): Promise<Result> {
 	const customPropertyRegistry = new Map<string, PropertyValue>();
 
 	const { css } = await sass.compileStringAsync(input);
-	const result = await postcss().process(css.toString(), { from: undefined, map: false });
+	const result = await postcss().process(css, { from: undefined, map: false });
 	result.root?.walkDecls((decl) => {
 		if (isCustomProperty(decl)) {
 			const { prop, value } = decl;
