@@ -1,6 +1,6 @@
 import { deepEqual, deepStrictEqual } from "node:assert";
 import { test } from "node:test";
-import parse from "../lib";
+import parse from "../lib/index.js";
 
 test("empty", async () => {
 	const input = "";
