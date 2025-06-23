@@ -3,11 +3,11 @@ import {
 	type ChildNode,
 	type Func,
 	type Numeric,
-	type Root,
 	parse as parseValue,
+	type Root,
 } from "postcss-values-parser";
 import * as sass from "sass";
-import { type JoinableChunk, Punctuation, Value, join } from "./joinable.js";
+import { type JoinableChunk, join, Punctuation, Value } from "./joinable.js";
 
 export type PropertyValue = undefined | number | string;
 
