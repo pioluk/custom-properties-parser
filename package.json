@@ -40,7 +40,7 @@
 		"@tsconfig/node18": "18.2.4",
 		"@types/node": "22.9.0",
 		"lefthook": "1.12.2",
-		"pkgroll": "2.14.5",
+		"pkgroll": "2.15.0",
 		"rimraf": "6.0.1",
 		"tsx": "4.20.3",
 		"typescript": "5.8.3"
