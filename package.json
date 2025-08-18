@@ -39,7 +39,7 @@
 		"@total-typescript/ts-reset": "0.6.1",
 		"@tsconfig/node18": "18.2.4",
 		"@types/node": "22.9.0",
-		"lefthook": "1.12.2",
+		"lefthook": "1.12.3",
 		"pkgroll": "2.15.3",
 		"rimraf": "6.0.1",
 		"tsx": "4.20.3",
