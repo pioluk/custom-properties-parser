@@ -48,7 +48,7 @@ test("text values in quotes", async () => {
 	`;
 	const result = await parse(input);
 	deepStrictEqual(result, {
-		"--var-1": `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emojibody"`,
+		"--var-1": `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", 'Segoe UI Emojibody'`,
 	});
 });
 
