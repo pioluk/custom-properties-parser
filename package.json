@@ -8,7 +8,7 @@
 		"url": "git+https://github.com/pioluk/custom-properties-parser.git"
 	},
 	"engines": {
-		"node": ">= 18"
+		"node": ">= 20"
 	},
 	"exports": {
 		"types": "./dist/index.d.ts",
@@ -37,7 +37,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.4.9",
 		"@total-typescript/ts-reset": "0.6.1",
-		"@tsconfig/node18": "18.2.6",
+		"@tsconfig/node20": "20.1.9",
 		"@types/node": "22.9.0",
 		"lefthook": "2.1.4",
 		"pkgroll": "2.27.0",
