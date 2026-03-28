@@ -1,99 +1,136 @@
-import postcss, { type Declaration } from "postcss";
-import {
-	type ChildNode,
-	type Func,
-	type Numeric,
-	parse as parseValue,
-	type Root,
-} from "postcss-values-parser";
+import * as csstree from "css-tree";
 import * as sass from "sass";
-import { type JoinableChunk, join, Punctuation, Value } from "./joinable.js";
 
 export type PropertyValue = undefined | number | string;
+type Registry = Map<string, PropertyValue>;
 
-type PropertyRegistry = Map<string, PropertyValue>;
-type Result = Record<string, PropertyValue>;
-
-export default async function parse(input: string): Promise<Result> {
-	const customPropertyRegistry = new Map<string, PropertyValue>();
+export default async function parse(input: string): Promise<Record<string, PropertyValue>> {
+	const registry: Registry = new Map();
 
 	const { css } = await sass.compileStringAsync(input);
-	const result = await postcss().process(css, { from: undefined, map: false });
-	result.root?.walkDecls((decl) => {
-		if (isCustomProperty(decl)) {
-			const { prop, value } = decl;
-			const parsed = parseValue(value);
-			customPropertyRegistry.set(prop, getValue(parsed, customPropertyRegistry));
+	const ast = csstree.parse(css, { context: "stylesheet" });
+
+	csstree.walk(ast, (node) => {
+		if (node.type === "Declaration" && node.property.startsWith("--")) {
+			registry.set(node.property, extractValue(node.value, registry));
 		}
 	});
 
-	return mapToRecord(customPropertyRegistry);
+	return Object.fromEntries(registry);
 }
 
-function isCustomProperty(node: Declaration): boolean {
-	return node.prop.startsWith("--");
-}
-
-function getValue(root: Root, customPropertyRegistry: PropertyRegistry): PropertyValue {
-	return collectNodes(root.nodes, customPropertyRegistry);
-}
-
-function collectNodes(nodes: ChildNode[], customPropertyRegistry: PropertyRegistry): PropertyValue {
-	if (nodes.length === 1) {
-		// If we have only one node, then parse it separately without joining to prevent converting number to string
-		return parseNode(nodes[0], customPropertyRegistry).value;
+function extractValue(node: csstree.CssNode, registry: Registry): PropertyValue {
+	if (node.type === "Raw") {
+		return parseRaw(node.value, registry);
 	}
-	return join(nodes.map((node) => parseNode(node, customPropertyRegistry)));
-}
-
-function parseNode(
-	node: ChildNode,
-	customPropertyRegistry: PropertyRegistry,
-): JoinableChunk<PropertyValue> {
-	switch (node.type) {
-		case "word":
-		case "quoted":
-			return Value(node.value);
-
-		case "punctuation":
-			return Punctuation(node.value);
-
-		case "numeric":
-			return Value(parseNumericValue(node));
-
-		case "func":
-			return Value(parseFunc(node, customPropertyRegistry));
-
-		default:
-			throw new Error(`Unsupported node type: "${node.type}"`);
+	if (node.type === "Value") {
+		return node.children.size === 1
+			? parseNode(node.children.first!, registry)
+			: joinValues(node.children.toArray().map((child) => parseNode(child, registry)));
 	}
+	return undefined;
 }
 
-function parseNumericValue(node: Numeric): PropertyValue {
-	return node.unit ? `${node.value}${node.unit}` : +node.value;
-}
+function parseRaw(value: string, registry: Registry): PropertyValue {
+	const cleaned = value
+		.replace(/\/\*[\s\S]*?\*\//g, "")
+		.replace(/\/\/.*$/gm, "")
+		.trim();
 
-function parseFunc(func: Func, customPropertyRegistry: PropertyRegistry): PropertyValue {
-	if (func.name !== "var") {
-		return func.toString();
+	if (cleaned === "") {
+		return "";
 	}
 
-	const args = func.nodes;
-	if ("value" in args[0]) {
-		const customPropertyName = args[0].value;
-		if (customPropertyRegistry.has(customPropertyName)) {
-			return customPropertyRegistry.get(customPropertyName);
+	if (/^-?\d+(\.\d+)?$/.test(cleaned)) {
+		return Number(cleaned);
+	}
+
+	try {
+		const ast = csstree.parse(cleaned, { context: "value" });
+		if (ast.type === "Value") {
+			return extractValue(ast, registry);
 		}
+	} catch {
+		// Fall through
 	}
 
-	const fallback = args[2];
-	if (!fallback || !("value" in fallback)) {
+	return cleaned;
+}
+
+function parseNode(node: csstree.CssNode, registry: Registry): PropertyValue {
+	switch (node.type) {
+		case "Identifier":
+			return node.name;
+		case "String":
+			return csstree.generate(node);
+		case "Number":
+			return Number(node.value);
+		case "Dimension":
+			return `${node.value}${node.unit}`;
+		case "Percentage":
+			return `${node.value}%`;
+		case "Function":
+			return parseFunction(node, registry);
+		case "Operator":
+		case "Raw":
+			return node.value;
+		case "Url":
+			return `url(${node.value})`;
+		default:
+			return csstree.generate(node);
+	}
+}
+
+function parseFunction(func: csstree.FunctionNode, registry: Registry): PropertyValue {
+	if (func.name !== "var") {
+		return csstree.generate(func).replace(/,(?![\s,])/g, ", ");
+	}
+
+	const children = func.children.toArray();
+	if (children.length === 0) {
 		return undefined;
 	}
 
-	return fallback.value;
+	const varName = children[0];
+	if (varName.type === "Identifier" && varName.name.startsWith("--")) {
+		const resolved = registry.get(varName.name);
+		if (resolved !== undefined) {
+			return resolved;
+		}
+	}
+
+	const commaIdx = children.findIndex((c) => c.type === "Operator" && c.value === ",");
+	if (commaIdx !== -1 && commaIdx < children.length - 1) {
+		const fallback = children
+			.slice(commaIdx + 1)
+			.map((c) => csstree.generate(c))
+			.join("")
+			.trim();
+
+		try {
+			const ast = csstree.parse(fallback, { context: "value" });
+			if (ast.type === "Value") {
+				const parsed = extractValue(ast, registry);
+				return typeof parsed === "string" ? parsed.trim() : parsed;
+			}
+		} catch {}
+		return fallback;
+	}
+
+	return undefined;
 }
 
-function mapToRecord<V>(map: Map<PropertyKey, V>): Record<PropertyKey, V> {
-	return Object.fromEntries(map.entries());
+function joinValues(values: PropertyValue[]): string {
+	return values
+		.filter((v): v is string | number => v !== undefined)
+		.map((v, i, arr) => {
+			const str = String(v);
+			const prev = i > 0 ? String(arr[i - 1]) : "";
+			if (i > 0 && !/^[,)]/.test(str) && !/[(+-]$/.test(prev)) {
+				return ` ${str}`;
+			}
+			return str;
+		})
+		.join("")
+		.trim();
 }

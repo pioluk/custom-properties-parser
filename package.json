@@ -14,10 +14,8 @@
 		"types": "./dist/index.d.mts",
 		"module": "./dist/index.mjs",
 		"import": "./dist/index.mjs",
-		"require": "./dist/index.cjs",
 		"default": "./dist/index.mjs"
 	},
-	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"scripts": {
 		"build": "tsdown",
@@ -28,17 +26,17 @@
 		"prepare": "test $CI || lefthook install"
 	},
 	"dependencies": {
-		"postcss": "^8.0.9",
-		"postcss-values-parser": "^5.0.0",
+		"css-tree": "^3.2.1",
 		"sass": "^1.45.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.4.9",
 		"@total-typescript/ts-reset": "0.6.1",
 		"@tsconfig/node20": "20.1.9",
+		"@types/css-tree": "2.3.10",
 		"@types/node": "22.9.0",
 		"lefthook": "2.1.4",
-		"tsdown": "^0.21.6",
+		"tsdown": "0.21.6",
 		"tsx": "4.21.0",
 		"typescript": "6.0.2"
 	}
