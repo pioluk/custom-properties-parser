@@ -48,7 +48,7 @@ test("text values in quotes", async () => {
 	`;
 	const result = await parse(input);
 	deepStrictEqual(result, {
-		"--var-1": `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", 'Segoe UI Emojibody'`,
+		"--var-1": `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emojibody"`,
 	});
 });
 
@@ -192,4 +192,139 @@ test("handles comments", async () => {
 		"--var-3": "3em",
 		"--var-4": "",
 	});
+});
+
+test("forward reference", async () => {
+	const input = `
+		:root {
+			--var-1: var(--var-2);
+			--var-2: red;
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--var-1": "red", "--var-2": "red" });
+});
+
+test("chain of references", async () => {
+	const input = `
+		:root {
+			--a: var(--b);
+			--b: var(--c);
+			--c: blue;
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--a": "blue", "--b": "blue", "--c": "blue" });
+});
+
+test("circular reference", async () => {
+	const input = `
+		:root {
+			--a: var(--b);
+			--b: var(--a);
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--a": undefined, "--b": undefined });
+});
+
+test("nested var() in fallback", async () => {
+	const input = `
+		:root {
+			--var-1: var(--a, var(--b, red));
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--var-1": "red" });
+});
+
+test("nested var() resolves inner reference", async () => {
+	const input = `
+		:root {
+			--b: green;
+			--var-1: var(--a, var(--b, red));
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--b": "green", "--var-1": "green" });
+});
+
+test("percentage values", async () => {
+	const input = `
+		:root {
+			--var-1: 50%;
+			--var-2: 100%;
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--var-1": "50%", "--var-2": "100%" });
+});
+
+test("url values", async () => {
+	const input = `
+		:root {
+			--var-1: url(image.png);
+			--var-2: url(https://example.com/image.jpg);
+			--var-3: url("quoted.png");
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, {
+		"--var-1": "url(image.png)",
+		"--var-2": "url(https://example.com/image.jpg)",
+		"--var-3": "url(quoted.png)",
+	});
+});
+
+test("negative numbers", async () => {
+	const input = `
+		:root {
+			--var-1: -5;
+			--var-2: -3.14;
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--var-1": -5, "--var-2": -3.14 });
+});
+
+test("decimal numbers", async () => {
+	const input = `
+		:root {
+			--var-1: 0.5;
+			--var-2: 1.25;
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--var-1": 0.5, "--var-2": 1.25 });
+});
+
+test("comma normalization in non-var functions", async () => {
+	const input = `
+		:root {
+			--var-1: rgb(255,0,0);
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--var-1": "rgb(255, 0, 0)" });
+});
+
+test("duplicate declarations use last value", async () => {
+	const input = `
+		:root {
+			--var-1: red;
+			--var-1: blue;
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--var-1": "blue" });
+});
+
+test("self-referencing variable", async () => {
+	const input = `
+		:root {
+			--a: var(--a);
+		}
+	`;
+	const result = await parse(input);
+	deepStrictEqual(result, { "--a": undefined });
 });
