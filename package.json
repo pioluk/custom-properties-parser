@@ -11,18 +11,16 @@
 		"node": ">= 20"
 	},
 	"exports": {
-		"types": "./dist/index.d.ts",
+		"types": "./dist/index.d.mts",
 		"module": "./dist/index.mjs",
 		"import": "./dist/index.mjs",
-		"require": "./dist/index.js",
+		"require": "./dist/index.cjs",
 		"default": "./dist/index.mjs"
 	},
-	"main": "./dist/index.js",
+	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"scripts": {
-		"build": "npm run clean && npm run bundle",
-		"bundle": "pkgroll --src lib",
-		"clean": "rimraf dist",
+		"build": "tsdown",
 		"format": "biome format --write .",
 		"lint": "biome lint --write .",
 		"test": "tsx --test",
@@ -40,9 +38,8 @@
 		"@tsconfig/node20": "20.1.9",
 		"@types/node": "22.9.0",
 		"lefthook": "2.1.4",
-		"pkgroll": "2.27.0",
-		"rimraf": "6.1.3",
+		"tsdown": "^0.21.6",
 		"tsx": "4.21.0",
-		"typescript": "5.9.3"
+		"typescript": "6.0.2"
 	}
 }
