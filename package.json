@@ -37,7 +37,7 @@
 		"@total-typescript/ts-reset": "0.6.1",
 		"@tsconfig/node20": "20.1.9",
 		"@types/node": "22.9.0",
-		"lefthook": "2.1.8",
+		"lefthook": "2.1.9",
 		"tsdown": "^0.22.0",
 		"tsx": "4.22.3",
 		"typescript": "6.0.3"
