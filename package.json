@@ -41,5 +41,9 @@
 		"tsdown": "^0.23.0",
 		"tsx": "4.23.15",
 		"typescript": "7.0.2"
+	},
+	"allowScripts": {
+		"lefthook@2.2.2": true,
+		"esbuild@0.28.2": true
 	}
 }
